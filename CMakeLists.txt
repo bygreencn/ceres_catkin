@@ -8,8 +8,8 @@ include_directories(${Eigen_INCLUDE_DIRS})
 
 include(ExternalProject)
 
-set(VERSION 1.9.0)
-set(CERES_TAG 6a13e39e8171f450fbb89188d97f198def81937e) #version 1.11
+set(VERSION 1.12.0)
+set(CERES_TAG 0352a521a654a29257077679c5a7ec9c35f45c7e) #version 1.12
 
 # The configure step fails at catkin_package() if this directory
 # doesn't exist yet. Create it at configure time!
@@ -17,26 +17,25 @@ file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include)
 
 # Patch away the linking to the gomp OpenMP implementation, in case we use the Intel OpenMP implementation and Clang.
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	set(GOMP_PATCH "")
+  set(GOMP_PATCH "")
 else (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	set(GOMP_PATCH "--dry-run")
+  set(GOMP_PATCH "--dry-run")
 endif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
 ExternalProject_Add(ceres_src
   GIT_REPOSITORY https://ceres-solver.googlesource.com/ceres-solver
   GIT_TAG ${CERES_TAG}
   UPDATE_COMMAND ""
-  PATCH_COMMAND cd ../ceres_src/ && git apply ${CMAKE_CURRENT_SOURCE_DIR}/clang_openmp.patch && git apply ${CMAKE_CURRENT_SOURCE_DIR}/is_const.patch && git apply ${CMAKE_CURRENT_SOURCE_DIR}/export_nonpublic.patch
-  CONFIGURE_COMMAND cmake -DCMAKE_CXX_FLAGS=-fPIC -DGFLAGS=ON 
+  CONFIGURE_COMMAND cmake -DCMAKE_CXX_FLAGS=-fPIC -DGFLAGS=ON
     -DGFLAGS_LIBRARY=${gflags_catkin_LIBRARIES}
     -DGFLAGS_INCLUDE_DIR=${gflags_catkin_INCLUDE_DIR}
     -DGLOG_INCLUDE_DIR=${glog_catkin_INCLUDE_DIR}
     -DGLOG_LIBRARY=${glog_catkin_LIBRARIES}
-    -DCMAKE_INSTALL_PREFIX=${CATKIN_DEVEL_PREFIX} -DBUILD_SHARED_LIBS=ON 
+    -DCMAKE_INSTALL_PREFIX=${CATKIN_DEVEL_PREFIX} -DBUILD_SHARED_LIBS=ON
     -DBUILD_DOCUMENTATION=OFF -DCMAKE_VERBOSE_MAKEFILE=ON
-    -DSUITESPARSE_INCLUDE_DIR_HINTS=${CATKIN_DEVEL_PREFIX}/include/suitesparse 
+    -DSUITESPARSE_INCLUDE_DIR_HINTS=${CATKIN_DEVEL_PREFIX}/include/suitesparse
     -DSUITESPARSE_LIBRARY_DIR_HINTS=${CATKIN_DEVEL_PREFIX}/lib ../ceres_src
-	-DCMAKE_BUILD_TYPE:STRING=Release
+    -DCMAKE_BUILD_TYPE:STRING=Release
     -DBUILD_EXAMPLES=OFF
     -DBUILD_TESTING=OFF
     -DEXPORT_NONPUBLIC_HEADERS=ON
