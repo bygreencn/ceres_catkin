@@ -2,7 +2,7 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 8581b4c..d81cbec 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -717,6 +717,15 @@ install(FILES ${CERES_HDRS} DESTINATION include/ceres)
+@@ -749,6 +749,15 @@ install(FILES ${CERES_HDRS} DESTINATION include/ceres)
  file(GLOB CERES_PUBLIC_INTERNAL_HDRS ${CMAKE_SOURCE_DIR}/include/ceres/internal/*.h)
  install(FILES ${CERES_PUBLIC_INTERNAL_HDRS} DESTINATION include/ceres/internal)
  
